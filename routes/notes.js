@@ -1,20 +1,21 @@
 // require things
 const notes = require('express').Router();
+const path = require('path');
 const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
 const uuid = require('../helpers/uuid');
 
 notes.get('/', (req, res) => {
     console.info(`${req.method} request received for notes`);
-    // readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
   });
 
   notes.post('/', (req, res) => {
     
     console.info(`${req.method} request received to submit feedback`);
-    const { title, text } = req.body;
+    const { noteTitle, noteText } = req.body;
   
     // If all the required properties are present
-    if (title && test) {
+    if (noteTitle && noteText) {
       // Variable for the object we will save
       const newNote = {
         title,
@@ -22,7 +23,7 @@ notes.get('/', (req, res) => {
         note_id: uuid(),
       };
   
-      readAndAppend(newFeedback, './db/feedback.json');
+      readAndAppend(newFeedback, './db/db.json');
   
       const response = {
         status: 'success',
