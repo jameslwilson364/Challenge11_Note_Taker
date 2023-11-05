@@ -1,7 +1,6 @@
 // require the things that I will be using
 const express = require('express');
 const path = require('path');
-// const fs  = require('fs');
 const noteData = require('./db/db.json');
 const api = require('./routes/index.js');
 
