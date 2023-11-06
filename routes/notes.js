@@ -1,18 +1,18 @@
-// require things
+// require statements
 const notes = require('express').Router();
 const path = require('path');
 const fs = require('fs');
 const {readFromFile} = require('../helpers/fsUtils');
 const uuid = require('../helpers/uuid');
 
-
+// get request that will pull back the db file and insert it on the aside of the page
 notes.get('/', (req, res) => {
     console.info(`${req.method} request received for notes`);
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
   });
 
+// post request to add a note to the db file
 notes.post('/', (req, res) => {
-  
     console.info(`${req.method} request received to submit feedback`);
     const newNote = req.body;
     console.log(newNote);
@@ -46,13 +46,13 @@ notes.post('/', (req, res) => {
       }
   });
 
+// delete request that will remove the selected note
 notes.delete('/:id', (req, res) => {
     console.info(`${req.method} request received for notes`);
     const noteId = req.params.id;
     console.log(noteId);
     const noteData = require('../db/db.json');
     if (noteId !== null) {
-    // const noteDataTemp = JSON.parse(noteData);
     const newNotes = noteData.filter((note) => note.id !== noteId);
     const newNoteDataString = JSON.stringify(newNotes);
 
