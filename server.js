@@ -5,8 +5,7 @@ const noteData = require('./db/db.json');
 const api = require('./routes/index.js');
 
 // set up the port for heroku or 3001
-// use app to invoke express
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 // Middleware for parsing JSON and urlencoded form data
