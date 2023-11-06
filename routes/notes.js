@@ -11,7 +11,7 @@ notes.get('/', (req, res) => {
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
   });
 
-  notes.post('/', (req, res) => {
+notes.post('/', (req, res) => {
   
     console.info(`${req.method} request received to submit feedback`);
     const newNote = req.body;
@@ -26,16 +26,13 @@ notes.get('/', (req, res) => {
         id: uuid(),
     };
     
-    
     noteData.push(newNoteSS);
     const noteDataString = JSON.stringify(noteData);
         
     fs.writeFile(`./db/db.json`, noteDataString, (err) =>
       err
       ? console.error(err)
-      : console.log(
-      `Note for ${newNote.title} has been written to JSON file`
-      )
+      : console.log(`Note for ${newNote.title} has been written to JSON file`)
     );
       
     const response = {
@@ -49,22 +46,33 @@ notes.get('/', (req, res) => {
       }
   });
 
-  // need a delete
-  
-  notes.delete('/:id', (req, res) => {
+notes.delete('/:id', (req, res) => {
     console.info(`${req.method} request received for notes`);
-    // const id = parse(req.params.id);
-    const note = req.body;
-    console.log(note);
-    // console.log(id);
-    // const noteData = require('../db/db.json');
-    // const noteId = noteData.find((noteData) => note_id === id);
-    // if (noteId == id) {
-    //   noteData.splice(noteId);
-    //   res.status(204).send();
-    // } else {
-    //   res.status(404).json({error: 'Not not found'});
-    // }
-  });
+    const noteId = req.params.id;
+    console.log(noteId);
+    const noteData = require('../db/db.json');
+    if (noteId !== null) {
+    // const noteDataTemp = JSON.parse(noteData);
+    const newNotes = noteData.filter((note) => note.id !== noteId);
+    const newNoteDataString = JSON.stringify(newNotes);
 
-  module.exports = notes;
+    fs.writeFile(`./db/db.json`, newNoteDataString, (err) =>
+    err
+    ? console.error(err)
+    : console.log(`Note id ${noteId} has been deleted from the JSON file`)
+  ); 
+    
+    
+    const response = {
+      status: 'success',
+    };
+  
+    res.json(response);
+    } else {
+      res.json('Error in posting feedback');
+    }
+   
+    
+});
+
+module.exports = notes;
